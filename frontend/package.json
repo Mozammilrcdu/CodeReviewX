@@ -22,6 +22,7 @@
     "react-scroll": "^1.9.3",
     "react-simple-code-editor": "^0.14.1",
     "rehype-highlight": "^7.0.2",
+    "rollup": "4.17.2",
     "typed.js": "^2.1.0"
   },
   "devDependencies": {
