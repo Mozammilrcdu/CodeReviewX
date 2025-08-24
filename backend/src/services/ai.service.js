@@ -62,12 +62,30 @@ Here’s a solid system instruction for your AI code reviewer:
 
 
 async function generateContent(prompt) {
+  try {
     const result = await model.generateContent(prompt);
 
-    console.log(result.response.text())
+    // Defensive extraction
+    let text = null;
+    if (result?.response?.text) {
+      text = result.response.text();
+    } else if (result?.response?.candidates?.length > 0) {
+      text = result.response.candidates[0]?.content?.parts
+        ?.map(p => p.text)
+        .join(" ");
+    }
 
-    return result.response.text();
+    if (!text) {
+      throw new Error("Gemini API returned an empty response");
+    }
 
+    console.log("Gemini Response:", text);
+    return text;
+
+  } catch (err) {
+    console.error("Error in ai.service.js:", err.message || err);
+    throw err;
+  }
 }
 
 module.exports = generateContent;
